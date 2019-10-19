@@ -1,0 +1,28 @@
+﻿@if (Model != null)
+{
+    <div style="overflow-y:auto; max-height:250px">
+
+        <table class="table table-bordered table-striped" cellspacing="0">
+            <thead>
+                <tr>
+                    @foreach (var property in Model.GetType().GetGenericArguments()[0].GetProperties())
+                    {
+                        <th>@property.Name</th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        @foreach (var property in item.GetType().GetProperties())
+                        {
+                            <td>@property.GetValue(item)</td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+}

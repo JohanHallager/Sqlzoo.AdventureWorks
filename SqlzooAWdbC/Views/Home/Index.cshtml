@@ -1,0 +1,36 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+    <div class="">
+        <h2>Page 1</h2>
+        <h3>#1</h3>
+        <p>Show the first name and the email address of customer with CompanyName 'Bike World'</p>
+        @await Component.InvokeAsync("CodeChallengeLoader", new { challenge = 1 })
+
+        <h3>#2</h3>
+        <p>Show the CompanyName for all customers with an address in City 'Dallas'.</p>
+        @await Component.InvokeAsync("CodeChallengeLoader", new { challenge = 2 })
+
+        <h3>#3</h3>
+        <p>How many items with ListPrice more than $1000 have been sold?</p>
+        @await Component.InvokeAsync("CodeChallengeLoader", new { challenge = 3 })
+
+
+        <h3>#4</h3>
+        <p>Give the CompanyName of those customers with orders over $100000. Include the subtotal plus tax plus freight.</p>
+        @await Component.InvokeAsync("CodeChallengeLoader", new { challenge = 4 })
+
+        <h3>#5</h3>
+        <p>Find the number of left racing socks ('Racing Socks, L') ordered by CompanyName 'Riding Cycles'</p>
+        @await Component.InvokeAsync("CodeChallengeLoader", new { challenge = 5 })
+
+        <h2>Page 2</h2>
+        <h3>#6</h3>
+        <p>A "Single Item Order" is a customer order where only one item is ordered. Show the SalesOrderID and the UnitPrice for every Single Item Order.</p>
+        @await Component.InvokeAsync("CodeChallengeLoader", new { challenge = 6 })
+
+
+
+
+    </div>
