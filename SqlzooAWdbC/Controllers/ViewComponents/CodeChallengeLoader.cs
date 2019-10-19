@@ -39,6 +39,8 @@ namespace SqlzooAWdbC.Controllers.ViewComponents
                     return View(CodeChallenge8());
                 case 9:
                     return View(await CodeChallenge9());
+                case 10:
+                    return View(await CodeChallenge10());
                 default:
                     return View(null);
             }
@@ -157,7 +159,15 @@ namespace SqlzooAWdbC.Controllers.ViewComponents
 
                 return model;
         }
+        private async Task<dynamic> CodeChallenge10()
+        {
+            var model = await _context.SalesOrderDetail
+                .Where(x => x.Product.ProductCategory.Name == "Cranksets" 
+                            && x.SalesOrder.ShipToAddress.City == "London")
+                .SumAsync(x => x.OrderQty);
 
+            return new List<dynamic> { new { a = model } };
+        }
 
     }
 }
