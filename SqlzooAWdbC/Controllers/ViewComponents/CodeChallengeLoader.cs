@@ -43,6 +43,8 @@ namespace SqlzooAWdbC.Controllers.ViewComponents
                     return View(await CodeChallenge10());
                 case 11:
                     return View(await CodeChallenge11());
+                case 12:
+                    return View(await CodeChallenge12());
                 default:
                     return View(null);
             }
@@ -180,6 +182,21 @@ namespace SqlzooAWdbC.Controllers.ViewComponents
                     MainOfficeAddress =   x.CustomerAddress.First(y=>y.AddressType == "Main Office" ).Address.AddressLine1,
                     ShippingAddress  =  x.CustomerAddress.FirstOrDefault(y=>y.AddressType == "Shipping").Address.AddressLine1
                 })
+                .ToListAsync();
+
+            return model;
+        }
+
+        private async Task<dynamic> CodeChallenge12()
+        {
+            var model = await _context.SalesOrderHeader
+               .Select(x => new
+               {
+                   x.SalesOrderId,
+                   x.SubTotal,
+                   OrderQtyUnitPrice = x.SalesOrderDetail.Sum(y => y.OrderQty * y.UnitPrice),
+                   OrderQtyListPrice = x.SalesOrderDetail.Sum(y => y.OrderQty * y.Product.ListPrice)
+               })
                 .ToListAsync();
 
             return model;
