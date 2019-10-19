@@ -41,6 +41,8 @@ namespace SqlzooAWdbC.Controllers.ViewComponents
                     return View(await CodeChallenge9());
                 case 10:
                     return View(await CodeChallenge10());
+                case 11:
+                    return View(await CodeChallenge11());
                 default:
                     return View(null);
             }
@@ -167,6 +169,20 @@ namespace SqlzooAWdbC.Controllers.ViewComponents
                 .SumAsync(x => x.OrderQty);
 
             return new List<dynamic> { new { a = model } };
+        }
+
+        private async Task<dynamic> CodeChallenge11()
+        {
+            var model = await _context.Customer
+                .Where(x => x.CustomerAddress.Where(y => y.AddressType == "Main Office" && y.Address.City == "Dallas").Any())
+                .Select(x => new {
+                    x.CompanyName,
+                    MainOfficeAddress =   x.CustomerAddress.First(y=>y.AddressType == "Main Office" ).Address.AddressLine1,
+                    ShippingAddress  =  x.CustomerAddress.FirstOrDefault(y=>y.AddressType == "Shipping").Address.AddressLine1
+                })
+                .ToListAsync();
+
+            return model;
         }
 
     }
