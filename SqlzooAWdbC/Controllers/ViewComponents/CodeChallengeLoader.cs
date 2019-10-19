@@ -35,6 +35,8 @@ namespace SqlzooAWdbC.Controllers.ViewComponents
                     return View(await CodeChallenge6());
                 case 7:
                     return View(await CodeChallenge7());
+                case 8:
+                    return View(CodeChallenge8());
                 default:
                     return View(null);
             }
@@ -127,6 +129,17 @@ namespace SqlzooAWdbC.Controllers.ViewComponents
                 .ToListAsync();
 
             return model;
+        }
+
+        private dynamic CodeChallenge8()
+        {
+            var product = _context.Product
+                .Include(x =>x.ProductModel)
+                .Include(x=>x.ProductModel.ProductModelProductDescription)
+                .ThenInclude(x=>x.ProductDescription)
+                .FirstOrDefault(x=>x.ProductId == 736);
+            var descriptionCulture = product?.ProductModel?.ProductModelProductDescription.FirstOrDefault(x => x.Culture.ToLower().Contains("fr"));
+            return new List<dynamic> { new { a = descriptionCulture?.ProductDescription?.Description } };
         }
     }
 }
