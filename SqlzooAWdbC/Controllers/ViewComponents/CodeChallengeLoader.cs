@@ -37,6 +37,8 @@ namespace SqlzooAWdbC.Controllers.ViewComponents
                     return View(await CodeChallenge7());
                 case 8:
                     return View(CodeChallenge8());
+                case 9:
+                    return View(await CodeChallenge9());
                 default:
                     return View(null);
             }
@@ -141,5 +143,21 @@ namespace SqlzooAWdbC.Controllers.ViewComponents
             var descriptionCulture = product?.ProductModel?.ProductModelProductDescription.FirstOrDefault(x => x.Culture.ToLower().Contains("fr"));
             return new List<dynamic> { new { a = descriptionCulture?.ProductDescription?.Description } };
         }
+        
+        private async Task<dynamic> CodeChallenge9()
+        {
+            var model = await _context.SalesOrderHeader
+                .OrderByDescending(x => x.SubTotal)
+                .Select(x => new
+                {
+                    x.SubTotal,
+                    x.Customer.CompanyName,
+                    x.Freight,
+                }).ToListAsync();
+
+                return model;
+        }
+
+
     }
 }
