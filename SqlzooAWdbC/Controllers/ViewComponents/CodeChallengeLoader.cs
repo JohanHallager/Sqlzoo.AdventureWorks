@@ -33,6 +33,8 @@ namespace SqlzooAWdbC.Controllers.ViewComponents
                     return View(await CodeChallenge5());
                 case 6:
                     return View(await CodeChallenge6());
+                case 7:
+                    return View(await CodeChallenge7());
                 default:
                     return View(null);
             }
@@ -109,6 +111,18 @@ namespace SqlzooAWdbC.Controllers.ViewComponents
                 .Select(x=> new { 
                     x.SalesOrderId,
                     x.UnitPrice
+                })
+                .ToListAsync();
+
+            return model;
+        }
+        private async Task<dynamic> CodeChallenge7()
+        {
+            var model = await _context.SalesOrderDetail
+                .Where(s => s.Product.ProductModel.Name == "Racing Socks" )
+                .Select(x => new {
+                    x.Product.Name,
+                    x.SalesOrder.Customer.CompanyName
                 })
                 .ToListAsync();
 
