@@ -246,7 +246,7 @@ namespace SqlzooAWdbC.Controllers.ViewComponents
                 x.Name,
                 Num_Orders = salesOrderDetail.Count(IsInRange(x)),
                 Total_Value = salesOrderDetail.Where(IsInRange(x)).Sum(y => y.UnitPrice * y.OrderQty)
-            });
+            }).ToList();
 
             return model;
         }
