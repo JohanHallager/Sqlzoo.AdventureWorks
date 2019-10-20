@@ -47,6 +47,8 @@ namespace SqlzooAWdbC.Controllers.ViewComponents
                     return View(await CodeChallenge12());
                 case 13:
                     return View(await CodeChallenge13());
+                case 14:
+                    return View(await CodeChallenge14());
                 default:
                     return View(null);
             }
@@ -221,5 +223,57 @@ namespace SqlzooAWdbC.Controllers.ViewComponents
 
             return model;
         }
+
+
+        private async Task<dynamic> CodeChallenge14()
+        {
+            var ranges = new List<Range> {
+                new Range{ Name ="    0-  99",  From = 0,     To = 99 } ,
+                new Range{ Name ="  100- 999",  From = 100,   To = 999 },
+                new Range{ Name =" 1000-9999",  From = 1000,  To = 9999 },
+                new Range{ Name ="10000-",      From = 10000 },
+            };
+
+            var salesOrderDetail = await _context.SalesOrderDetail
+                //.GroupBy(x=> ranges.FirstOrDefault(r => {
+                //    bool v = r.To != null ? true : false;
+                //    return v; 
+                //} ).Name   )
+                .ToListAsync();
+
+            var model = ranges.Select(x => new
+            {
+                x.Name,
+                Num_Orders = salesOrderDetail.Count(IsInRange(x)),
+                Total_Value = salesOrderDetail.Where(IsInRange(x)).Sum(y => y.UnitPrice * y.OrderQty)
+            });
+
+            return model;
+        }
+
+        private static Func<SalesOrderDetail, bool> IsInRange(Range x)
+        {
+            return y =>
+            {
+                bool v = x.To == null;
+                var value = y.UnitPrice * y.OrderQty;
+                if (v)
+                {
+                    return value >= x.From;
+                }
+                return x.From <= value && value <= x.To;
+            };
+        }
     }
+
+    public class Range
+    {
+        public string Name { get; set; }
+        public decimal From { get; set; }
+        public decimal? To { get; set; }
+
+    }
+
+
+
 }
