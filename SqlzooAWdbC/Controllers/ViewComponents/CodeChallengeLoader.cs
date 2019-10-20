@@ -45,6 +45,8 @@ namespace SqlzooAWdbC.Controllers.ViewComponents
                     return View(await CodeChallenge11());
                 case 12:
                     return View(await CodeChallenge12());
+                case 13:
+                    return View(await CodeChallenge13());
                 default:
                     return View(null);
             }
@@ -202,5 +204,22 @@ namespace SqlzooAWdbC.Controllers.ViewComponents
             return model;
         }
 
+
+        private async Task<dynamic> CodeChallenge13()
+        {
+            var model = await _context.SalesOrderDetail
+                .GroupBy(x=>  x.Product.Name, (y) => new { 
+                   Value = y.OrderQty * y.UnitPrice
+                })
+                .Select(x => new
+                {
+                    Product_Name = x.Key,
+                    Total_Sale_Value =  x.Sum(y=> y.Value )  ,
+                })
+                .OrderByDescending(x => x.Total_Sale_Value)
+                .ToListAsync();
+
+            return model;
+        }
     }
 }
